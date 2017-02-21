@@ -25,11 +25,11 @@ namespace AspUploadHandler
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +38,13 @@ namespace AspUploadHandler
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseSwagger(c => {
+            });
+            app.UseSwaggerUi(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute( name: "default", 
@@ -45,13 +52,7 @@ namespace AspUploadHandler
                     defaults: new { controller = "Main", 
                     action = "Index" });
             });
-            app.UseSwagger();
 
-
-            app.UseSwaggerUi(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
         }
     }
 }

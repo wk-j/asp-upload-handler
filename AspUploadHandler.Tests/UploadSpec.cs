@@ -18,7 +18,7 @@ namespace AspUploadHandler.Tests
             };
             using (var formDataContent = new MultipartFormDataContent()) 
             {
-                var content = File.ReadAllBytes("/Users/wk/Source/github/asp-upload-handler/AspUploadHandler.sln");
+                var content = File.ReadAllBytes("AspUploadHandler.sln");
 
                 formDataContent.Add(new ByteArrayContent(content), "files", "Hello.pdf");
                 formDataContent.Add(new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json"), "json");
@@ -43,7 +43,7 @@ namespace AspUploadHandler.Tests
 
             using (var formDataContent = new MultipartFormDataContent()) 
             {
-                var content = File.ReadAllBytes("/Users/wk/Source/github/asp-upload-handler/AspUploadHandler.sln");
+                var content = File.ReadAllBytes("AspUploadHandler.sln");
                 var guid = Guid.NewGuid().ToString("N");
 
                 formDataContent.Add(new ByteArrayContent(content), "files", $"{guid}-Hello.sln");

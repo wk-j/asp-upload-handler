@@ -12,9 +12,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore">
       <Version>1.0.0-rc1</Version>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.SwaggerUi">
-      <Version>6.0.0-beta902</Version>
-    </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.3.0</Version>
     </PackageReference>
