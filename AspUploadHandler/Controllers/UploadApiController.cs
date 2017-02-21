@@ -8,7 +8,7 @@ using System;
 using Microsoft.Extensions.Primitives;
 using System.Linq;
 
-namespace AspUploadHandler.Controllers 
+namespace AspUploadHandler.Controllers
 {
     public class UploadApiController : Controller
     {
@@ -20,15 +20,17 @@ namespace AspUploadHandler.Controllers
         }
 
         [HttpGet]
-        [Route("api/uploadApi/hello")]
-        public async Task<string> Hello() {
+        public async Task<string> Hello()
+        {
             return await Task.Run(() => "Hello, world!");
         }
 
-        private (bool, string) GetJsonString(HttpRequest request) {
+        private (bool, string) GetJsonString(HttpRequest request)
+        {
             StringValues value = "";
             var success = request.Form.TryGetValue("json", out value);
-            if(success) {
+            if (success)
+            {
                 var json = String.Join("", value);
                 return (true, json);
             }
@@ -36,37 +38,40 @@ namespace AspUploadHandler.Controllers
         }
 
         [HttpPost]
-        [Route("api/uploadApi/uploadFileAndMetadata")]
-        public async Task<object> UploadFileAndMetadata() 
+        public async Task<object> UploadFileAndMetadata()
         {
             Console.WriteLine("Upload file and metadata ...");
 
             var request = this.Request;
             var files = request.Form.Files;
             var (success, json) = GetJsonString(request);
-            if(success) {
+            if (success)
+            {
                 Console.Write(json);
             }
- 
-            await Task.Run(() => {
-                var tasks = files.ToList().Select(async file => {
+
+            await Task.Run(() =>
+            {
+                var tasks = files.ToList().Select(async file =>
+                {
                     var guid = Guid.NewGuid().ToString("N");
                     var target = Path.Combine(_environment.WebRootPath, "uploads", $"{guid}-{file.FileName}");
-                    using(var stream = new FileStream(target, FileMode.Create, FileAccess.Write)) {
+                    using (var stream = new FileStream(target, FileMode.Create, FileAccess.Write))
+                    {
                         await file.CopyToAsync(stream);
                     }
                 });
                 Task.WaitAll(tasks.ToArray());
             });
 
-            return new {
+            return new
+            {
                 Success = true
             };
         }
 
         [HttpPost]
-        [Route("api/uploadApi/uploadFile")]
-        public async Task<object> UploadFile(ICollection<IFormFile> files)
+        public async Task<object> UploadFile([FromForm] ICollection<IFormFile> files)
         {
             Console.WriteLine("Upload file ...");
             var uploads = Path.Combine(_environment.WebRootPath, "uploads");
@@ -80,7 +85,8 @@ namespace AspUploadHandler.Controllers
                     }
                 }
             }
-            return new {
+            return new
+            {
                 Success = true
             };
         }
