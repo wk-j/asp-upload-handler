@@ -1,0 +1,6 @@
+bin
+obj
+XXX
+tools
+*.log
+wwwroot
